@@ -1,0 +1,417 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0b1220;
+  --card: #111827;
+  --card2: #1f2937;
+  --border: #2b3648;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --warning: #f59e0b;
+  --info: #2563eb;
+  --primary: #7c3aed;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    Inter,
+    Segoe UI,
+    Roboto,
+    sans-serif;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, #1e293b 0%, transparent 35%),
+    radial-gradient(circle at bottom right, #312e81 0%, transparent 25%),
+    var(--bg);
+}
+
+.app {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  width: 360px;
+  min-width: 360px;
+  background: rgba(17, 24, 39, 0.95);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 24px;
+  backdrop-filter: blur(20px);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.logo-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-size: 28px;
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+}
+
+.logo h2 {
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+}
+
+.logo span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.section h3 {
+  margin-bottom: 18px;
+  font-size: 1rem;
+}
+
+/* =========================
+   FORMS
+========================= */
+
+label {
+  display: block;
+  margin-bottom: 16px;
+}
+
+label span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card2);
+  color: var(--text);
+  outline: none;
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: #7c3aed;
+}
+
+.switch-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch-row span {
+  margin: 0;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+  transition: 0.25s;
+  margin-bottom: 10px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.success {
+  background: var(--success);
+}
+
+.warning {
+  background: var(--warning);
+}
+
+.danger {
+  background: var(--danger);
+}
+
+.info {
+  background: var(--info);
+}
+
+.primary {
+  background: var(--primary);
+}
+
+/* =========================
+   TIMER
+========================= */
+
+.timer {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+#status {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-wrapper {
+  width: 100%;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #0f172a;
+  border: 1px solid var(--border);
+}
+
+#progress {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
+  transition: 0.25s;
+}
+
+#progressText {
+  margin-top: 10px;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+}
+
+.preview-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.preview-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.card-title {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+
+video {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  background: black;
+}
+
+.canvas-wrapper {
+  margin-top: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+canvas {
+  width: 100%;
+  display: block;
+  background: black;
+}
+
+/* =========================
+   LOADING OVERLAY
+========================= */
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.hidden {
+  display: none;
+}
+
+.loading-box {
+  width: 320px;
+  padding: 30px;
+  border-radius: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.loading-box h3 {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.loading-box p {
+  color: var(--muted);
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  border: 5px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #7c3aed;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+  .preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  video {
+    height: 300px;
+  }
+}
+
+@media (max-width: 900px) {
+  body {
+    overflow: auto;
+  }
+
+  .app {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  canvas {
+    min-height: 260px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    padding: 15px;
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  .timer {
+    font-size: 1.6rem;
+  }
+
+  video {
+    height: 220px;
+  }
+
+  .logo {
+    flex-direction: column;
+    text-align: center;
+  }
+}
