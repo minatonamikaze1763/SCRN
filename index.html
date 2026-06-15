@@ -3,138 +3,263 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Screen Recorder Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/core-st@0.11.0/dist/ffmpeg-core.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          Segoe UI,
+          sans-serif;
+      }
 
-    <link rel="stylesheet" href="styles.css" />
+      body {
+        background: #111827;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
 
-    <!-- FFmpeg -->
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+      .container {
+        width: 900px;
+        max-width: 100%;
+        background: #1f2937;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .start {
+        background: #16a34a;
+        color: white;
+      }
+
+      .stop {
+        background: #dc2626;
+        color: white;
+      }
+
+      .download {
+        background: #2563eb;
+        color: white;
+      }
+
+      .convert {
+        background: #d97706;
+        color: white;
+      }
+
+      video {
+        width: 100%;
+        border-radius: 10px;
+        background: black;
+        margin-top: 15px;
+      }
+
+      .status {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #9ca3af;
+      }
+      .convert.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: not-allowed;
+      }
+    </style>
   </head>
+
   <body>
-    <div class="app">
-      <aside class="sidebar">
-        <div class="logo">
-          <div class="logo-icon">🎥</div>
-          <div>
-            <h2>Screen Recorder Pro</h2>
-            <span>Professional Recorder</span>
-          </div>
-        </div>
+    <div class="container">
+      <h1>🎥 Screen Recorder Pro</h1>
 
-        <div class="section">
-          <h3>Recording Options</h3>
-
-          <label class="switch-row">
-            <span>Microphone</span>
-            <input type="checkbox" id="micToggle" checked />
-          </label>
-
-          <label class="switch-row">
-            <span>Webcam Overlay</span>
-            <input type="checkbox" id="webcamToggle" />
-          </label>
-
-          <label>
-            <span>Quality</span>
-            <select id="quality">
-              <option value="720">720p HD</option>
-              <option value="1080" selected>1080p Full HD</option>
-              <option value="1440">1440p QHD</option>
-              <option value="2160">4K UHD</option>
-            </select>
-          </label>
-
-          <label>
-            <span>Filename</span>
-            <input
-              type="text"
-              id="filename"
-              value="recording"
-              placeholder="recording"
-            />
-          </label>
-
-          <label>
-            <span>Export Format</span>
-            <select id="format">
-              <option value="webm">WEBM</option>
-              <option value="mp4">MP4</option>
-              <option value="mkv">MKV</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="section">
-          <h3>Recorder</h3>
-
-          <button id="startBtn" class="btn success">▶ Start Recording</button>
-
-          <button id="pauseBtn" class="btn warning" disabled>⏸ Pause</button>
-
-          <button id="resumeBtn" class="btn info" disabled>▶ Resume</button>
-
-          <button id="stopBtn" class="btn danger" disabled>
-            ■ Stop Recording
-          </button>
-        </div>
-
-        <div class="section">
-          <h3>Status</h3>
-
-          <div class="timer" id="timer">00:00:00</div>
-
-          <div id="status">Ready</div>
-
-          <div class="progress-wrapper">
-            <div class="progress-bar">
-              <div id="progress"></div>
-            </div>
-
-            <div id="progressText">0%</div>
-          </div>
-        </div>
-
-        <div class="section">
-          <button id="downloadBtn" class="btn primary" disabled>
-            ⬇ Download Recording
-          </button>
-        </div>
-      </aside>
-
-      <main class="content">
-        <div class="preview-grid">
-          <div class="preview-card">
-            <div class="card-title">Screen Preview</div>
-
-            <video id="screenPreview" autoplay muted playsinline></video>
-          </div>
-
-          <div class="preview-card webcam-card">
-            <div class="card-title">Webcam Preview</div>
-
-            <video id="webcamPreview" autoplay muted playsinline></video>
-          </div>
-        </div>
-
-        <div class="canvas-wrapper">
-          <div class="card-title">Final Recording Preview</div>
-
-          <canvas id="recordCanvas" width="1920" height="1080"></canvas>
-        </div>
-      </main>
-    </div>
-
-    <div id="loadingOverlay" class="loading-overlay hidden">
-      <div class="loading-box">
-        <div class="spinner"></div>
-
-        <h3 id="loadingTitle">Loading FFmpeg...</h3>
-
-        <p id="loadingText">Please wait</p>
+      <div class="controls">
+        <button class="start" onclick="startRecording()">
+          Start Recording
+        </button>
+        <button class="stop" onclick="stopRecording()">Stop Recording</button>
+        <button class="download" onclick="downloadWebM()">Download WebM</button>
+        <button class="convert disabled" onclick="convertToMP4()">
+          Export MP4
+        </button>
+        <button class="convert disabled" onclick="convertToGIF()">
+          Export GIF
+        </button>
       </div>
+
+      <video id="preview" controls></video>
+
+      <div class="status" id="status">Ready</div>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+      let mediaRecorder;
+      let recordedChunks = [];
+      let recordedBlob;
+
+      const video = document.getElementById("preview");
+      const statusText = document.getElementById("status");
+
+      async function startRecording() {
+        try {
+          const stream = await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: true,
+          });
+
+          recordedChunks = [];
+
+          mediaRecorder = new MediaRecorder(stream, {
+            mimeType: "video/webm",
+          });
+
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) {
+              recordedChunks.push(e.data);
+            }
+          };
+
+          mediaRecorder.onstop = () => {
+            recordedBlob = new Blob(recordedChunks, {
+              type: "video/webm",
+            });
+
+            video.src = URL.createObjectURL(recordedBlob);
+
+            statusText.innerText = "Recording complete.";
+          };
+
+          mediaRecorder.start();
+
+          statusText.innerText = "Recording...";
+        } catch (err) {
+          alert(err.message);
+        }
+      }
+
+      function stopRecording() {
+        if (mediaRecorder) {
+          mediaRecorder.stop();
+        }
+      }
+
+      function downloadWebM() {
+        if (!recordedBlob) {
+          alert("Record first");
+          return;
+        }
+
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(recordedBlob);
+        a.download = "recording.webm";
+        a.click();
+      }
+
+      async function convertToMP4() {
+        if (!recordedBlob) {
+          alert("Record first");
+          return;
+        }
+
+        const { createFFmpeg, fetchFile } = FFmpeg;
+
+        const ffmpeg = createFFmpeg({
+          log: true,
+        });
+
+        if (!ffmpeg.isLoaded()) {
+          await ffmpeg.load();
+        }
+
+        ffmpeg.FS("writeFile", "input.webm", await fetchFile(recordedBlob));
+
+        await ffmpeg.run(
+          "-i",
+          "input.webm",
+          "-c:v",
+          "libx264",
+          "-c:a",
+          "aac",
+          "output.mp4",
+        );
+
+        const data = ffmpeg.FS("readFile", "output.mp4");
+
+        const mp4Blob = new Blob([data.buffer], { type: "video/mp4" });
+
+        const a = document.createElement("a");
+
+        a.href = URL.createObjectURL(mp4Blob);
+        a.download = "recording.mp4";
+        a.click();
+      }
+
+      async function convertToGIF() {
+        if (!recordedBlob) {
+          alert("Record first");
+          return;
+        }
+
+        statusText.innerText = "Converting to GIF...";
+
+        const { FFmpeg } = FFmpeg;
+        const ffmpeg = new FFmpeg();
+
+        await ffmpeg.load();
+
+        const data = await fetch(URL.createObjectURL(recordedBlob)).then((r) =>
+          r.arrayBuffer(),
+        );
+
+        await ffmpeg.writeFile("input.webm", new Uint8Array(data));
+
+        await ffmpeg.exec([
+          "-i",
+          "input.webm",
+          "-vf",
+          "fps=10,scale=800:-1:flags=lanczos",
+          "output.gif",
+        ]);
+
+        const gifData = await ffmpeg.readFile("output.gif");
+
+        const gifBlob = new Blob([gifData.buffer], { type: "image/gif" });
+
+        const a = document.createElement("a");
+
+        a.href = URL.createObjectURL(gifBlob);
+        a.download = "recording.gif";
+        a.click();
+
+        statusText.innerText = "GIF exported";
+      }
+    </script>
   </body>
 </html>

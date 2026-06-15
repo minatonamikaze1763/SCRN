@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Screen Recorder Pro</title>
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- FFmpeg -->
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="logo">
+          <div class="logo-icon">🎥</div>
+          <div>
+            <h2>Screen Recorder Pro</h2>
+            <span>Professional Recorder</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Recording Options</h3>
+
+          <label class="switch-row">
+            <span>Microphone</span>
+            <input type="checkbox" id="micToggle" checked />
+          </label>
+
+          <label class="switch-row">
+            <span>Webcam Overlay</span>
+            <input type="checkbox" id="webcamToggle" />
+          </label>
+
+          <label>
+            <span>Quality</span>
+            <select id="quality">
+              <option value="720">720p HD</option>
+              <option value="1080" selected>1080p Full HD</option>
+              <option value="1440">1440p QHD</option>
+              <option value="2160">4K UHD</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Filename</span>
+            <input
+              type="text"
+              id="filename"
+              value="recording"
+              placeholder="recording"
+            />
+          </label>
+
+          <label>
+            <span>Export Format</span>
+            <select id="format">
+              <option value="webm">WEBM</option>
+              <option value="mp4">MP4</option>
+              <option value="mkv">MKV</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="section">
+          <h3>Recorder</h3>
+
+          <button id="startBtn" class="btn success">▶ Start Recording</button>
+
+          <button id="pauseBtn" class="btn warning" disabled>⏸ Pause</button>
+
+          <button id="resumeBtn" class="btn info" disabled>▶ Resume</button>
+
+          <button id="stopBtn" class="btn danger" disabled>
+            ■ Stop Recording
+          </button>
+        </div>
+
+        <div class="section">
+          <h3>Status</h3>
+
+          <div class="timer" id="timer">00:00:00</div>
+
+          <div id="status">Ready</div>
+
+          <div class="progress-wrapper">
+            <div class="progress-bar">
+              <div id="progress"></div>
+            </div>
+
+            <div id="progressText">0%</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <button id="downloadBtn" class="btn primary" disabled>
+            ⬇ Download Recording
+          </button>
+        </div>
+      </aside>
+
+      <main class="content">
+        <div class="preview-grid">
+          <div class="preview-card">
+            <div class="card-title">Screen Preview</div>
+
+            <video id="screenPreview" autoplay muted playsinline></video>
+          </div>
+
+          <div class="preview-card webcam-card">
+            <div class="card-title">Webcam Preview</div>
+
+            <video id="webcamPreview" autoplay muted playsinline></video>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <div class="card-title">Final Recording Preview</div>
+
+          <canvas id="recordCanvas" width="1920" height="1080"></canvas>
+        </div>
+      </main>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay hidden">
+      <div class="loading-box">
+        <div class="spinner"></div>
+
+        <h3 id="loadingTitle">Loading FFmpeg...</h3>
+
+        <p id="loadingText">Please wait</p>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
